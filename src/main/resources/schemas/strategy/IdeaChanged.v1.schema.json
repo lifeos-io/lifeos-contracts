@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/IdeaChanged.v1.schema.json",
+  "title": "IdeaChanged v1 payload",
+  "description": "An idea after it was captured, edited, evaluated or moved between statuses (full state). At most two ideas of a user are ACTIVE at a time. Consumers replace their copy when version is higher than the one they hold.",
+  "type": "object",
+  "required": ["ideaId", "goalId", "title", "note", "status", "activatedAt", "closedAt", "promotedGoalId", "latestEvaluation", "evaluationCount", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "ideaId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "goalId": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "The goal the idea would serve, if any"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "note": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "enum": ["INBOX", "ACTIVE", "SHELVED", "DROPPED", "PROMOTED"]
+    },
+    "activatedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "The last time the idea became ACTIVE"
+    },
+    "closedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Set once the idea is DROPPED or PROMOTED"
+    },
+    "promotedGoalId": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "The goal the idea grew into; set only when PROMOTED"
+    },
+    "latestEvaluation": {
+      "description": "The most recent evaluation, or null if the idea was never evaluated",
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["goalFit", "evidencePotential", "energy", "weeklyMinutes", "verdict", "note", "evaluatedAt"],
+          "additionalProperties": false,
+          "properties": {
+            "goalFit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5,
+              "description": "How much the idea serves the user's open goals"
+            },
+            "evidencePotential": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5,
+              "description": "How likely it is to produce evidence for a goal"
+            },
+            "energy": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5,
+              "description": "How much the user wants to do it"
+            },
+            "weeklyMinutes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10080,
+              "description": "Estimated time per week while it is active"
+            },
+            "verdict": {
+              "enum": ["PURSUE", "PARK", "DROP"]
+            },
+            "note": {
+              "type": ["string", "null"]
+            },
+            "evaluatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      ]
+    },
+    "evaluationCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
