@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/ActionStatusChanged.v1.schema.json",
+  "title": "ActionStatusChanged v1 payload",
+  "description": "An action of the active week changed status, or was added to the active week (previousStatus null). Carries the action and the week's totals after the change, so consumers can keep their weekly activity up to date from this event alone.",
+  "type": "object",
+  "required": ["actionId", "weeklyPlanId", "isoWeek", "goalIds", "phaseKey", "kind", "estimateMinutes", "previousStatus", "status", "deferredCount", "completedAt", "week"],
+  "additionalProperties": false,
+  "$defs": {
+    "status": {
+      "enum": ["PLANNED", "DONE", "DEFERRED", "DROPPED"]
+    }
+  },
+  "properties": {
+    "actionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "weeklyPlanId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "isoWeek": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-W[0-9]{2}$"
+    },
+    "goalIds": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "phaseKey": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "kind": {
+      "enum": ["DOMAIN", "TECHNICAL", "INFO_GATHERING", "EVIDENCE", "REST", "OTHER"]
+    },
+    "estimateMinutes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "previousStatus": {
+      "oneOf": [
+        { "$ref": "#/$defs/status" },
+        { "type": "null" }
+      ],
+      "description": "null when the action was just added to the active week"
+    },
+    "status": {
+      "$ref": "#/$defs/status"
+    },
+    "deferredCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "How often the action has been deferred so far"
+    },
+    "completedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "week": {
+      "type": "object",
+      "description": "The week's actions after the change",
+      "required": ["planned", "done", "deferred", "dropped", "plannedMinutes", "doneMinutes"],
+      "additionalProperties": false,
+      "properties": {
+        "planned": { "type": "integer", "minimum": 0 },
+        "done": { "type": "integer", "minimum": 0 },
+        "deferred": { "type": "integer", "minimum": 0 },
+        "dropped": { "type": "integer", "minimum": 0 },
+        "plannedMinutes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Estimates of all actions except dropped ones"
+        },
+        "doneMinutes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
