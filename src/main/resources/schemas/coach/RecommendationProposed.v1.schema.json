@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/coach/RecommendationProposed.v1.schema.json",
+  "title": "RecommendationProposed v1 payload",
+  "description": "Coach proposes a change to the user's plan. Coach never changes the plan itself: Strategy stores the proposal and applies it only when the user accepts it. v1 knows one kind: STRATEGY_REVISION, a complete new strategy version for a goal, based on the version Coach saw.",
+  "type": "object",
+  "required": ["recommendationId", "kind", "goalId", "basedOnVersionNo", "rationale", "sources", "revision"],
+  "additionalProperties": false,
+  "properties": {
+    "recommendationId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Coach's ID of the recommendation; Strategy keeps it to report the decision back"
+    },
+    "kind": {
+      "enum": ["STRATEGY_REVISION"]
+    },
+    "goalId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "basedOnVersionNo": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "The goal's current strategy version Coach based this on; null when the goal had no strategy yet"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
+      "description": "Why Coach proposes this, shown to the user"
+    },
+    "sources": {
+      "type": "array",
+      "maxItems": 20,
+      "description": "What prompted the recommendation",
+      "items": {
+        "type": "object",
+        "required": ["type", "id"],
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "enum": ["FEEDBACK", "EVIDENCE", "WEEKLY_REVIEW", "DECISION", "KNOWLEDGE_ITEM"]
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    },
+    "revision": {
+      "type": "object",
+      "description": "The complete proposed strategy version, in the shape of Strategy's create request",
+      "required": ["summary", "changeReason", "phases", "effortAllocation"],
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "changeReason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "phases": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "required": ["phaseKey", "title", "startsOn", "endsOn", "exitCriteria", "status"],
+            "additionalProperties": false,
+            "properties": {
+              "phaseKey": {
+                "type": ["string", "null"],
+                "format": "uuid",
+                "description": "A phase of the version Coach based this on, to carry it over; null for a new phase"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "startsOn": {
+                "type": "string",
+                "format": "date"
+              },
+              "endsOn": {
+                "type": "string",
+                "format": "date"
+              },
+              "exitCriteria": {
+                "type": ["string", "null"],
+                "maxLength": 2000
+              },
+              "status": {
+                "enum": ["UPCOMING", "ACTIVE", "DONE"]
+              }
+            }
+          }
+        },
+        "effortAllocation": {
+          "type": "object",
+          "description": "Percent per category; the values add up to 100",
+          "required": ["TECHNICAL", "DOMAIN", "OTHER"],
+          "additionalProperties": false,
+          "properties": {
+            "TECHNICAL": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "DOMAIN": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "OTHER": { "type": "integer", "minimum": 0, "maximum": 100 }
+          }
+        }
+      }
+    }
+  }
+}

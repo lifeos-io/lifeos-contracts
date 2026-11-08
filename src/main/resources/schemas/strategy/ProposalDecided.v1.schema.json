@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/ProposalDecided.v1.schema.json",
+  "title": "ProposalDecided v1 payload",
+  "description": "What became of a Coach recommendation (RecommendationProposed): the user accepted it (it was applied as a new strategy version) or rejected it, or a newer recommendation for the same goal replaced it before the user decided.",
+  "type": "object",
+  "required": ["proposalId", "recommendationId", "goalId", "decision", "note", "strategyVersionId", "decidedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "proposalId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "recommendationId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Coach's ID from RecommendationProposed"
+    },
+    "goalId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "decision": {
+      "enum": ["ACCEPTED", "REJECTED", "SUPERSEDED"]
+    },
+    "note": {
+      "type": ["string", "null"],
+      "description": "The user's reason, when they gave one (usually for a rejection)"
+    },
+    "strategyVersionId": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "The strategy version the proposal became; set only when ACCEPTED"
+    },
+    "decidedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
