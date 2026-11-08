@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/DecisionRecorded.v1.schema.json",
+  "title": "DecisionRecorded v1 payload",
+  "description": "The user made a decision: the alternatives weighed (one chosen, the others with a rejection reason), what they expect, when to review it and what should make them reopen it. Tetikleyici schedules the review and watches the triggers.",
+  "type": "object",
+  "required": ["decisionId", "goalId", "title", "context", "alternatives", "expectedOutcome", "decidedAt", "reviewOn", "assumptionIds", "reopenTriggers"],
+  "additionalProperties": false,
+  "properties": {
+    "decisionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "goalId": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context": {
+      "type": ["string", "null"]
+    },
+    "alternatives": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["label", "description", "chosen", "rejectionReason"],
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "pattern": "^[A-Z]$"
+          },
+          "description": {
+            "type": "string"
+          },
+          "chosen": {
+            "type": "boolean"
+          },
+          "rejectionReason": {
+            "type": ["string", "null"],
+            "description": "Why it was not chosen; null for the chosen alternative"
+          }
+        }
+      }
+    },
+    "expectedOutcome": {
+      "type": "string"
+    },
+    "decidedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewOn": {
+      "type": "string",
+      "format": "date"
+    },
+    "assumptionIds": {
+      "type": "array",
+      "description": "Knowledge items the decision rests on",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "reopenTriggers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "description", "eventType", "firesOn"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": ["DATE", "EVENT"]
+          },
+          "description": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": ["string", "null"],
+            "description": "For EVENT triggers: the event that should reopen the decision, if it is a system event"
+          },
+          "firesOn": {
+            "type": ["string", "null"],
+            "format": "date",
+            "description": "For DATE triggers"
+          }
+        }
+      }
+    }
+  }
+}

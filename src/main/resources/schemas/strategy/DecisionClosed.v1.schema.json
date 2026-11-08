@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/DecisionClosed.v1.schema.json",
+  "title": "DecisionClosed v1 payload",
+  "description": "The user looked back on a decision: what came of it and whether they would decide the same way again. wouldDecideAgain keeps decision quality apart from luck (GOOD_CALL_BAD_LUCK).",
+  "type": "object",
+  "required": ["decisionId", "goalId", "title", "expectedOutcome", "outcomeNote", "wouldDecideAgain", "decidedAt", "closedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "decisionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "goalId": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "title": {
+      "type": "string"
+    },
+    "expectedOutcome": {
+      "type": "string"
+    },
+    "outcomeNote": {
+      "type": "string",
+      "minLength": 1
+    },
+    "wouldDecideAgain": {
+      "enum": ["YES", "NO", "GOOD_CALL_BAD_LUCK"]
+    },
+    "decidedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "closedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
