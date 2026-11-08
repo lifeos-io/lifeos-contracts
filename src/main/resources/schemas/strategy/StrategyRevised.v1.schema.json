@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/StrategyRevised.v1.schema.json",
+  "title": "StrategyRevised v1 payload",
+  "description": "A goal got a new strategy version (the first one, or a revision). Carries the full new version; it is now the goal's current strategy. phaseKey stays the same for a phase across versions, so consumers can follow a phase through revisions.",
+  "type": "object",
+  "required": ["goalId", "strategyVersionId", "versionNo", "previousVersionNo", "summary", "changeReason", "sourceProposalId", "phases", "effortAllocation"],
+  "additionalProperties": false,
+  "properties": {
+    "goalId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "strategyVersionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "versionNo": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "previousVersionNo": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "null for the goal's first strategy"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "changeReason": {
+      "type": "string"
+    },
+    "sourceProposalId": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "The change proposal this revision came from, if any"
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["phaseKey", "ordinal", "title", "startsOn", "endsOn", "exitCriteria", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "phaseKey": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ordinal": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string"
+          },
+          "startsOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "endsOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "exitCriteria": {
+            "type": ["string", "null"]
+          },
+          "status": {
+            "enum": ["UPCOMING", "ACTIVE", "DONE"]
+          }
+        }
+      }
+    },
+    "effortAllocation": {
+      "type": "object",
+      "description": "Percent per category; the values add up to 100",
+      "required": ["TECHNICAL", "DOMAIN", "OTHER"],
+      "additionalProperties": false,
+      "properties": {
+        "TECHNICAL": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "DOMAIN": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "OTHER": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    }
+  }
+}
