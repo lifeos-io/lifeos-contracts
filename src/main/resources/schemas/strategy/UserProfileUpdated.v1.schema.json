@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/UserProfileUpdated.v1.schema.json",
+  "title": "UserProfileUpdated v1 payload",
+  "description": "The user's profile after it was created or changed (full state). Consumers keep the time zone and locale for scheduling and delivery.",
+  "type": "object",
+  "required": ["displayName", "timezone", "locale", "defaultWeeklyMinutes", "onboardingCompletedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "displayName": {
+      "type": ["string", "null"],
+      "maxLength": 100
+    },
+    "timezone": {
+      "type": "string",
+      "description": "IANA zone ID, e.g. Europe/Istanbul"
+    },
+    "locale": {
+      "type": "string",
+      "description": "BCP 47 language tag, e.g. tr-TR"
+    },
+    "defaultWeeklyMinutes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10080
+    },
+    "onboardingCompletedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  }
+}

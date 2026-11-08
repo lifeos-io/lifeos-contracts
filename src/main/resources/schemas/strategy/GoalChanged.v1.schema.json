@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/GoalChanged.v1.schema.json",
+  "title": "GoalChanged v1 payload",
+  "description": "The goal after it was created or changed (full state, including status and priority). Consumers replace their copy when version is higher than the one they hold.",
+  "type": "object",
+  "required": ["goalId", "title", "domain", "whyItMatters", "successDefinition", "windowStart", "windowEnd", "status", "priority", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "goalId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "domain": {
+      "enum": ["CAREER", "LEARNING", "FINANCE", "HEALTH", "OTHER"]
+    },
+    "whyItMatters": {
+      "type": ["string", "null"]
+    },
+    "successDefinition": {
+      "type": ["string", "null"]
+    },
+    "windowStart": {
+      "type": "string",
+      "format": "date"
+    },
+    "windowEnd": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "enum": ["ACTIVE", "PAUSED", "ACHIEVED", "ABANDONED"]
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "1 = most important among the user's goals"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Grows with every change of the goal"
+    }
+  }
+}
