@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/FeedbackRecorded.v1.schema.json",
+  "title": "FeedbackRecorded v1 payload",
+  "description": "The user recorded feedback they received (from a manager, a peer, a code review...). Kule may turn it into a strategy revision proposal.",
+  "type": "object",
+  "required": ["feedbackId", "sourceKind", "sourceLabel", "content", "reliability", "receivedOn"],
+  "additionalProperties": false,
+  "properties": {
+    "feedbackId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "sourceKind": {
+      "enum": ["MANAGER", "PEER", "CODE_REVIEW", "SELF", "OTHER"]
+    },
+    "sourceLabel": {
+      "type": ["string", "null"],
+      "description": "Who it came from in the user's words, e.g. \"team lead\""
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reliability": {
+      "enum": ["HIGH", "MEDIUM", "LOW"]
+    },
+    "receivedOn": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

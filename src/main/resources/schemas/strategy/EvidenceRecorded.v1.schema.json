@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/EvidenceRecorded.v1.schema.json",
+  "title": "EvidenceRecorded v1 payload",
+  "description": "The user recorded evidence of progress. parentEvidenceId links it to the lower step of the chain activity -> output -> outcome -> impact; phaseKeys are the phases whose exit criteria it counts towards.",
+  "type": "object",
+  "required": ["evidenceId", "title", "level", "strength", "occurredOn", "parentEvidenceId", "actionId", "feedbackId", "goalIds", "phaseKeys"],
+  "additionalProperties": false,
+  "properties": {
+    "evidenceId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level": {
+      "enum": ["ACTIVITY", "OUTPUT", "OUTCOME", "IMPACT"]
+    },
+    "strength": {
+      "enum": ["SELF_REPORT", "PERSONAL_PROJECT", "WORK_OUTPUT", "EXTERNAL_FEEDBACK"]
+    },
+    "occurredOn": {
+      "type": "string",
+      "format": "date"
+    },
+    "parentEvidenceId": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "actionId": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "feedbackId": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "goalIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "phaseKeys": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    }
+  }
+}
