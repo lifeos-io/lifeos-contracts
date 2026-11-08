@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/WeeklyPlanActivated.v1.schema.json",
+  "title": "WeeklyPlanActivated v1 payload",
+  "description": "The user committed to a week's plan: its capacity, how it is split across goals (and under which strategy version) and how much work was planned.",
+  "type": "object",
+  "required": ["weeklyPlanId", "isoWeek", "weekStart", "capacityMinutes", "headline", "allocations", "plannedActionCount", "plannedActionMinutes"],
+  "additionalProperties": false,
+  "properties": {
+    "weeklyPlanId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "isoWeek": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-W[0-9]{2}$",
+      "description": "e.g. 2026-W46"
+    },
+    "weekStart": {
+      "type": "string",
+      "format": "date",
+      "description": "Monday of the ISO week"
+    },
+    "capacityMinutes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "headline": {
+      "type": ["string", "null"]
+    },
+    "allocations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["goalId", "strategyVersionId", "allocatedMinutes"],
+        "additionalProperties": false,
+        "properties": {
+          "goalId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "strategyVersionId": {
+            "type": ["string", "null"],
+            "format": "uuid",
+            "description": "The goal's current strategy version when the plan was activated; null if it had none"
+          },
+          "allocatedMinutes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "plannedActionCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "plannedActionMinutes": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
