@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/WeeklyReviewCompleted.v1.schema.json",
+  "title": "WeeklyReviewCompleted v1 payload",
+  "description": "The user looked back on their active week and closed it: what was planned and done (counted when the review was written), how each goal fared against its share of the week, how the week felt and what comes next. Reviews never change once written.",
+  "type": "object",
+  "required": ["weeklyReviewId", "weeklyPlanId", "isoWeek", "weekStart", "capacityMinutes", "actions", "goals", "evidenceCount", "energy", "wentWell", "gotStuck", "lesson", "nextWeekFocus", "completedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "weeklyReviewId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "weeklyPlanId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "isoWeek": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-W[0-9]{2}$"
+    },
+    "weekStart": {
+      "type": "string",
+      "format": "date"
+    },
+    "capacityMinutes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "actions": {
+      "type": "object",
+      "description": "The week's actions by status when the review was written",
+      "required": ["planned", "done", "deferred", "dropped", "plannedMinutes", "doneMinutes"],
+      "additionalProperties": false,
+      "properties": {
+        "planned": { "type": "integer", "minimum": 0 },
+        "done": { "type": "integer", "minimum": 0 },
+        "deferred": { "type": "integer", "minimum": 0 },
+        "dropped": { "type": "integer", "minimum": 0 },
+        "plannedMinutes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Estimates of all actions except dropped ones"
+        },
+        "doneMinutes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "goals": {
+      "type": "array",
+      "description": "Each goal of the week's split: its minutes and the estimates of its done actions (an action serving two goals counts for both)",
+      "items": {
+        "type": "object",
+        "required": ["goalId", "allocatedMinutes", "doneMinutes"],
+        "additionalProperties": false,
+        "properties": {
+          "goalId": { "type": "string", "format": "uuid" },
+          "allocatedMinutes": { "type": "integer", "minimum": 0 },
+          "doneMinutes": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "evidenceCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Evidence the user recorded as occurring within the week"
+    },
+    "energy": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "How the week felt, 1 (drained) to 5 (energised)"
+    },
+    "wentWell": {
+      "type": ["string", "null"]
+    },
+    "gotStuck": {
+      "type": ["string", "null"]
+    },
+    "lesson": {
+      "type": ["string", "null"]
+    },
+    "nextWeekFocus": {
+      "type": ["string", "null"]
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
