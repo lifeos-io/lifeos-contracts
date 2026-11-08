@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/KnowledgeItemChanged.v1.schema.json",
+  "title": "KnowledgeItemChanged v1 payload",
+  "description": "An entry of a goal's knowledge map (fact, assumption or unknown) after it was created or changed (full state). Consumers replace their copy when version is higher than the one they hold.",
+  "type": "object",
+  "required": ["knowledgeItemId", "goalId", "statement", "kind", "status", "external", "source", "howToVerify", "verifiedAt", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "knowledgeItemId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "goalId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "kind": {
+      "enum": ["FACT", "ASSUMPTION", "UNKNOWN"]
+    },
+    "status": {
+      "enum": ["UNVERIFIED", "PARTIAL", "VERIFIED", "FALSIFIED"]
+    },
+    "external": {
+      "type": "boolean",
+      "description": "About the outside world (market, companies) rather than about the user"
+    },
+    "source": {
+      "type": ["string", "null"]
+    },
+    "howToVerify": {
+      "type": ["string", "null"]
+    },
+    "verifiedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Set while the status is VERIFIED or FALSIFIED"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
