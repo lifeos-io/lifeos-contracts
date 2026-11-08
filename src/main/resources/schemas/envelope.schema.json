@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/envelope.schema.json",
+  "title": "Life OS event envelope",
+  "type": "object",
+  "required": [
+    "eventId",
+    "eventType",
+    "eventVersion",
+    "occurredAt",
+    "userId",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID v7"
+    },
+    "eventType": {
+      "type": "string",
+      "description": "e.g. FeedbackRecorded"
+    },
+    "eventVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "userId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Keycloak sub; Kafka key"
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object"
+    }
+  }
+}
