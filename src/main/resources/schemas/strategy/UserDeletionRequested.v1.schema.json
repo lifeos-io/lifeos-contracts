@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/UserDeletionRequested.v1.schema.json",
+  "title": "UserDeletionRequested v1 payload",
+  "description": "The user asked to delete their data (KVKK). Strategy has already deleted its own data when this is published; every other service deletes everything it holds for the envelope's userId, and Strategy deletes the identity account. Handling it twice must be harmless. The payload carries no personal data on purpose.",
+  "type": "object",
+  "required": ["requestedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "requestedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
