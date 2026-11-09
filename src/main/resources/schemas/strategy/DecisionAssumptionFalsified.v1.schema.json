@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/DecisionAssumptionFalsified.v1.schema.json",
+  "title": "DecisionAssumptionFalsified v1 payload",
+  "description": "A knowledge item an open decision rests on was just found false: the decision should be looked at again. Published once per open decision that rests on the item, when the item becomes FALSIFIED.",
+  "type": "object",
+  "required": ["decisionId", "goalId", "title", "knowledgeItemId", "statement", "falsifiedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "decisionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "goalId": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "title": {
+      "type": "string",
+      "description": "The decision's title"
+    },
+    "knowledgeItemId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "statement": {
+      "type": "string",
+      "description": "What turned out to be false"
+    },
+    "falsifiedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

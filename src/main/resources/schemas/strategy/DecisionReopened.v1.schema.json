@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/DecisionReopened.v1.schema.json",
+  "title": "DecisionReopened v1 payload",
+  "description": "The user reopened a decided (open or closed) decision. The original stays as history; a new draft that starts from its content is weighed again. When the draft is decided, an open original is superseded (DecisionSuperseded).",
+  "type": "object",
+  "required": ["decisionId", "reopenedFromId", "title", "reason", "falsifiedAssumptionIds", "reopenedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "decisionId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The new draft"
+    },
+    "reopenedFromId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The decision that was reopened"
+    },
+    "title": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "falsifiedAssumptionIds": {
+      "type": "array",
+      "description": "Assumptions of the original that were FALSIFIED when it was reopened (often the reason)",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "reopenedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/strategy/DecisionSuperseded.v1.schema.json",
+  "title": "DecisionSuperseded v1 payload",
+  "description": "An open decision was replaced: the decision reopened from it was decided. Its review date and reopen triggers no longer apply; the new decision's DecisionRecorded carries the new ones.",
+  "type": "object",
+  "required": ["decisionId", "supersededById", "supersededAt"],
+  "additionalProperties": false,
+  "properties": {
+    "decisionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "supersededById": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "supersededAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
