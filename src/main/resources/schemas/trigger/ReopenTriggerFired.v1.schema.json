@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/trigger/ReopenTriggerFired.v1.schema.json",
+  "title": "ReopenTriggerFired v1 payload",
+  "description": "A DATE reopen trigger of an open decision fired (DecisionRecorded.reopenTriggers[position].firesOn): the user said they would reconsider the decision then. Strategy records it on the trigger (fired_at).",
+  "type": "object",
+  "required": ["decisionId", "position", "description", "firesOn", "dueAt"],
+  "additionalProperties": false,
+  "properties": {
+    "decisionId": { "type": "string", "format": "uuid" },
+    "position": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Index of the trigger in DecisionRecorded.reopenTriggers"
+    },
+    "description": { "type": "string" },
+    "firesOn": { "type": "string", "format": "date" },
+    "dueAt": { "type": "string", "format": "date-time" }
+  }
+}

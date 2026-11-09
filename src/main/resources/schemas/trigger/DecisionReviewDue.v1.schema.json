@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/trigger/DecisionReviewDue.v1.schema.json",
+  "title": "DecisionReviewDue v1 payload",
+  "description": "An open decision reached its review date (DecisionRecorded.reviewOn): time to look back on it. Published at the morning of that date in the user's time zone; not published for decisions closed or superseded before.",
+  "type": "object",
+  "required": ["decisionId", "goalId", "title", "reviewOn", "dueAt"],
+  "additionalProperties": false,
+  "properties": {
+    "decisionId": { "type": "string", "format": "uuid" },
+    "goalId": { "type": ["string", "null"], "format": "uuid" },
+    "title": { "type": "string" },
+    "reviewOn": { "type": "string", "format": "date" },
+    "dueAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When it was scheduled for (it may be published later if Trigger was down)"
+    }
+  }
+}

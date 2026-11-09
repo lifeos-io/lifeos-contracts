@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifeos/schemas/trigger/WeeklyReviewDue.v1.schema.json",
+  "title": "WeeklyReviewDue v1 payload",
+  "description": "The active week is ending and has no review yet (Sunday evening in the user's time zone).",
+  "type": "object",
+  "required": ["weeklyPlanId", "isoWeek", "weekStart", "dueAt"],
+  "additionalProperties": false,
+  "properties": {
+    "weeklyPlanId": { "type": "string", "format": "uuid" },
+    "isoWeek": { "type": "string", "pattern": "^[0-9]{4}-W[0-9]{2}$" },
+    "weekStart": { "type": "string", "format": "date" },
+    "dueAt": { "type": "string", "format": "date-time" }
+  }
+}
